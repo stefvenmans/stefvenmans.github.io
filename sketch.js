@@ -63,7 +63,7 @@ const shapes = new Set();
 function setup() {
   createCanvas(w, h);
 
-  for(let i=0; i<20; i++){
+  for(let i=0; i<5; i++){
     shapes.add(new Shape("black", random(0,width), random(0,height), random(-1,1), parseInt(random(-1, 3))));
   }
   
@@ -85,9 +85,27 @@ function draw() {
   }
 
 }
-function mouseClicked() {
-  for (const shape of shapes) {
+function touchStarted() {
+    let s = new Shape("black", mouseX, mouseY, random(-1,1), parseInt(random(-1, 3)))
+    s.start(random(-5,5));
+    s.display();
+    s.move();
+    shapes.add(s);
+}
+
+function mousePressed() {
+    let s = new Shape("black", mouseX, mouseY, random(-1,1), parseInt(random(-1, 3)))
+    s.start(random(-5,5));
+    s.display();
+    s.move();
+    shapes.add(s);
+}
+
+function keyPressed() {
+  if (keyCode == 32) {
+    for (const shape of shapes) {
     shape.flipAngle();
+  }
   }
 }
 
