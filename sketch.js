@@ -1,15 +1,16 @@
-class Car {
+
+class Shape {
   /* Constructor expects parameters for
   fill color, x and y coordinates that
   will be used to initialize class properties.
   */
-  constructor(cColor, x, y) {
+  constructor(cColor, x, y, angle, type) {
     this.color = cColor;
-    this.doors = 4;
-    this.isConvertible = false;
     this.x = x;
     this.y = y;
+    this.angle = angle;
     this.speed = 0;
+    this.type = type;
   }
 
   start(speed) { // method expects parameter!
@@ -18,7 +19,18 @@ class Car {
 
   display() { // method!
     fill(this.color);
-    rect(this.x, this.y, 20, 10);
+    switch(this.type){
+      case 0: rect(this.x, this.y, 20, 20,2);
+        break;
+      case 1: triangle(this.x,this.y, this.x-10,this.y+20, this.x+10,this.y+20)
+        break;
+      case 2: circle(this.x, this.y, 20, 30);
+        break;
+        
+      case 3: quad(this.x, this.y, this.x+10, this.y-10,this.x-20, this.y-20, this.x+50, this.y-30)
+        break;
+    }
+    
   }
 
   move() { // method!
@@ -29,49 +41,55 @@ class Car {
     } else if (this.x > width) {
       this.x = -20;
     }
+    this.y += this.speed*this.angle;
+    // Wrap x around boundaries
+    if (this.y < -20) {
+      this.y = height;
+    } else if (this.y > height) {
+      this.y = -20;
+    }
+  }
+  
+  flipAngle(){
+    this.angle = this.angle*(-1);
   }
 } //end class Car
-
-let rav4;
-let charger;
-let nova;
 
 var w = window.innerWidth;
 var h = window.innerHeight;  
 
+const shapes = new Set();
+
 function setup() {
   createCanvas(w, h);
-  /* Construct the 3 Cars */
-  //constructor expects cColor, x, y
-  rav4 = new Car("silver", 100, 300);
-  charger = new Car("gold", 0, 200);  
-  nova = new Car("blue", 200, 100); 
-  nova.doors = 2; //update nova's doors property
+
+  for(let i=0; i<5; i++){
+    shapes.add(new Shape("black", random(0,width), random(0,height), random(-1,1), parseInt(random(-1, 3))));
+  }
   
-  console.log("rav4", rav4);
-  console.log("charger", charger);
-  console.log("nova", nova);
+  for (const shape of shapes) {
+    shape.start(random(-5,5));
+  }
   
-  //call start methods of Car instances
-  //the start method expects a number for speed
-  rav4.start(2.3);
-  charger.start(-4);
-  nova.start(random(-1, 1));
 }
 
 function draw() {
-  background("beige");
+  background("#03A9F4");
   
   //display and move all 3 Cars
-  rav4.display();
-  charger.display();
-  nova.display();
   
-  rav4.move();
-  charger.move();
-  nova.move();
-}
+  
+  for (const shape of shapes) {
+    shape.display();
+    shape.move();
+  }
 
+}
+function mouseClicked() {
+  for (const shape of shapes) {
+    shape.flipAngle();
+  }
+}
 
 window.onresize = function() {
   // assigns new values for width and height variables
