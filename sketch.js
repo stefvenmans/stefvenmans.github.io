@@ -36,8 +36,11 @@ let rav4;
 let charger;
 let nova;
 
+var w = window.innerWidth;
+var h = window.innerHeight;  
+
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(w, h);
   /* Construct the 3 Cars */
   //constructor expects cColor, x, y
   rav4 = new Car("silver", 100, 300);
@@ -67,4 +70,12 @@ function draw() {
   rav4.move();
   charger.move();
   nova.move();
+}
+
+
+window.onresize = function() {
+  // assigns new values for width and height variables
+  w = window.innerWidth;
+  h = window.innerHeight;  
+  canvas.size(w,h);
 }
