@@ -63,7 +63,7 @@ const shapes = new Set();
 function setup() {
   createCanvas(w, h);
 
-  for(let i=0; i<5; i++){
+  for(let i=0; i<20; i++){
     shapes.add(new Shape("black", random(0,width), random(0,height), random(-1,1), parseInt(random(-1, 3))));
   }
   
